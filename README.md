@@ -17,6 +17,7 @@ See results/gcp-sample-output.txt.
 ```
 
 ## Test results
+
 See results/{storage-class}-{storage-capacity}-output.txt.
 
 # Manual tests

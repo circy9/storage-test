@@ -11,7 +11,8 @@ set -x
 # Get input params.
 ##########################
 STORAGE_CLASS=('standard'  'standard-rwo' 'premium-rwo')
-STORAGE_CAPACITY=('10Gi' '100Gi' '1Ti')
+# 500Gi is the max for standard-rwo and premium-rwo in a zone like us-west1-a.
+STORAGE_CAPACITY=('10Gi' '100Gi' '500Gi')
 
 ##########################
 # Run tests.
