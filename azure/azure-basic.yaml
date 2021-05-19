@@ -1,0 +1,68 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: standard-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: standard-rwo-pvc
+spec:
+  storageClassName: standard-rwo
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: premium-rwo-pvc
+spec:
+  storageClassName: premium-rwo
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+    - mountPath: "/mnt/standard"
+      name: standard-volume
+    - mountPath: "/mnt/standard-rwo"
+      name: standard-rwo-volume
+    - mountPath: "/mnt/premium-rwo"
+      name: premium-rwo-volume
+  volumes:
+    - name: standard-volume
+      persistentVolumeClaim:
+        claimName: standard-pvc
+    - name: standard-rwo-volume
+      persistentVolumeClaim:
+        claimName: standard-rwo-pvc
+    - name: premium-rwo-volume
+      persistentVolumeClaim:
+        claimName: premium-rwo-pvc
