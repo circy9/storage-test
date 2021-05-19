@@ -391,3 +391,396 @@ Random Read/Write IOPS: 160/328. BW: 17.8MiB/s / 31.3MiB/s
 Average Latency (usec) Read/Write: 23741.09/11.98
 Sequential Read/Write: 111MiB/s / 119MiB/s
 Mixed Random Read/Write IOPS: 137/49
+========================
+Tue 18 May 2021 07:51:34 PM PDT
+========================
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dbench-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dbench-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: dbench
+        image: fbuchmeier/dbench
+        imagePullPolicy: Always
+        env:
+          - name: DBENCH_MOUNTPOINT
+            value: /data
+          # - name: DBENCH_QUICK
+          #   value: "yes"
+          # - name: FIO_SIZE
+          #   value: 1G
+          # - name: FIO_OFFSET_INCREMENT
+          #   value: 256M
+          # - name: FIO_DIRECT
+          #   value: "0"
+        volumeMounts:
+        - name: dbench-pv
+          mountPath: /data
+      restartPolicy: Never
+      volumes:
+      - name: dbench-pv
+        persistentVolumeClaim:
+          claimName: dbench-pvc
+  backoffLimit: 4
+NAME                   READY   STATUS      RESTARTS   AGE
+pod/dbench-job-xplgh   0/1     Completed   0          3m53s
+
+NAME                 TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.39.240.1   <none>        443/TCP   7h5m
+
+NAME                   COMPLETIONS   DURATION   AGE
+job.batch/dbench-job   1/1           3m53s      3m54s
+NAME         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+dbench-pvc   Bound    pvc-7cbb2745-8898-4fef-a6ed-027cc6e819a0   10Gi       RWO            standard       3m54s
+Name:         dbench-job-xplgh
+Namespace:    default
+Priority:     0
+Node:         gke-cluster-default-pool-d3fcc5fc-08qx/10.138.0.6
+Start Time:   Tue, 18 May 2021 19:47:45 -0700
+Labels:       controller-uid=67d08436-9dc2-4544-9a1b-70ad512b26f9
+              job-name=dbench-job
+Annotations:  <none>
+Status:       Succeeded
+IP:           10.36.0.12
+IPs:
+  IP:           10.36.0.12
+Controlled By:  Job/dbench-job
+Containers:
+  dbench:
+    Container ID:   containerd://e61791a26ae32c05c84fb3d8da241a2f4f9b0d260d5a237b6da10f9c7070d09d
+    Image:          fbuchmeier/dbench
+    Image ID:       docker.io/fbuchmeier/dbench@sha256:a6a84bc6e42a4f7f56c970fe0ef136168b4e5e3565ec4645ea959d30f2d284b1
+    Port:           <none>
+    Host Port:      <none>
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Tue, 18 May 2021 19:48:04 -0700
+      Finished:     Tue, 18 May 2021 19:51:36 -0700
+    Ready:          False
+    Restart Count:  0
+    Environment:
+      DBENCH_MOUNTPOINT:  /data
+    Mounts:
+      /data from dbench-pv (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-jm9ts (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  dbench-pv:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  dbench-pvc
+    ReadOnly:   false
+  default-token-jm9ts:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-jm9ts
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason                  Age                    From                     Message
+  ----     ------                  ----                   ----                     -------
+  Warning  FailedScheduling        3m53s (x2 over 3m53s)  default-scheduler        0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.
+  Normal   Scheduled               3m51s                  default-scheduler        Successfully assigned default/dbench-job-xplgh to gke-cluster-default-pool-d3fcc5fc-08qx
+  Normal   SuccessfulAttachVolume  3m44s                  attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-7cbb2745-8898-4fef-a6ed-027cc6e819a0"
+  Normal   Pulling                 3m33s                  kubelet                  Pulling image "fbuchmeier/dbench"
+  Normal   Pulled                  3m32s                  kubelet                  Successfully pulled image "fbuchmeier/dbench" in 871.160005ms
+  Normal   Created                 3m32s                  kubelet                  Created container dbench
+  Normal   Started                 3m32s                  kubelet                  Started container dbench
+Working dir: /data
+
+Testing Read IOPS...
+read_iops: (g=0): rw=randread, bs=4096B-4096B,4096B-4096B,4096B-4096B, ioengine=libaio, iodepth=64
+fio-2.17-45-g06cb
+Starting 1 process
+read_iops: Laying out IO file(s) (1 file(s) / 2048MiB)
+
+read_iops: (groupid=0, jobs=1): err= 0: pid=14: Wed May 19 02:48:40 2021
+   read: IOPS=161, BW=662KiB/s (678kB/s)(9.98MiB/15406msec)
+  cpu          : usr=0.31%, sys=0.93%, ctx=2560, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.2%, 8=0.3%, 16=0.6%, 32=1.3%, >=64=118.4%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwt: total=2486,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=662KiB/s (678kB/s), 662KiB/s-662KiB/s (678kB/s-678kB/s), io=9.98MiB (10.5MB), run=15406-15406msec
+
+Disk stats (read/write):
+  sdb: ios=2979/3, merge=0/1, ticks=1090622/1134, in_queue=1090277, util=98.98%
+
+
+Testing Write IOPS...
+write_iops: (g=0): rw=randwrite, bs=4096B-4096B,4096B-4096B,4096B-4096B, ioengine=libaio, iodepth=64
+fio-2.17-45-g06cb
+Starting 1 process
+
+write_iops: (groupid=0, jobs=1): err= 0: pid=24: Wed May 19 02:48:58 2021
+  write: IOPS=328, BW=1332KiB/s (1363kB/s)(19.1MiB/15321msec)
+  cpu          : usr=0.46%, sys=1.56%, ctx=4970, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.2%, 16=0.3%, 32=0.6%, >=64=116.9%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwt: total=0,5037,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+  WRITE: bw=1332KiB/s (1363kB/s), 1332KiB/s-1332KiB/s (1363kB/s-1363kB/s), io=19.1MiB (20.9MB), run=15321-15321msec
+
+Disk stats (read/write):
+  sdb: ios=0/5932, merge=0/3, ticks=0/1078897, in_queue=1074876, util=99.08%
+
+
+Testing Read Bandwidth...
+read_bw: (g=0): rw=randread, bs=128KiB-128KiB,128KiB-128KiB,128KiB-128KiB, ioengine=libaio, iodepth=64
+fio-2.17-45-g06cb
+Starting 1 process
+
+read_bw: (groupid=0, jobs=1): err= 0: pid=34: Wed May 19 02:49:16 2021
+   read: IOPS=137, BW=17.8MiB/s (18.6MB/s)(275MiB/15545msec)
+  cpu          : usr=0.24%, sys=0.95%, ctx=2221, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.2%, 8=0.4%, 16=0.7%, 32=1.5%, >=64=116.6%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwt: total=2139,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=17.8MiB/s (18.6MB/s), 17.8MiB/s-17.8MiB/s (18.6MB/s-18.6MB/s), io=275MiB (289MB), run=15545-15545msec
+
+Disk stats (read/write):
+  sdb: ios=2551/2, merge=0/1, ticks=1104582/883, in_queue=1104186, util=98.92%
+
+
+Testing Write Bandwidth...
+write_bw: (g=0): rw=randwrite, bs=128KiB-128KiB,128KiB-128KiB,128KiB-128KiB, ioengine=libaio, iodepth=64
+fio-2.17-45-g06cb
+Starting 1 process
+
+write_bw: (groupid=0, jobs=1): err= 0: pid=44: Wed May 19 02:49:34 2021
+  write: IOPS=242, BW=30.9MiB/s (32.3MB/s)(474MiB/15380msec)
+  cpu          : usr=1.22%, sys=1.41%, ctx=3774, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.2%, 16=0.4%, 32=0.9%, >=64=116.8%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwt: total=0,3725,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+  WRITE: bw=30.9MiB/s (32.3MB/s), 30.9MiB/s-30.9MiB/s (32.3MB/s-32.3MB/s), io=474MiB (497MB), run=15380-15380msec
+
+Disk stats (read/write):
+  sdb: ios=0/4389, merge=0/3, ticks=0/1070532, in_queue=1068480, util=98.95%
+
+
+Testing Read Latency...
+read_latency: (g=0): rw=randread, bs=4096B-4096B,4096B-4096B,4096B-4096B, ioengine=libaio, iodepth=4
+fio-2.17-45-g06cb
+Starting 1 process
+
+read_latency: (groupid=0, jobs=1): err= 0: pid=54: Wed May 19 02:49:52 2021
+   read: IOPS=164, BW=658KiB/s (674kB/s)(9888KiB/15023msec)
+    slat (usec): min=4, max=2148, avg=39.92, stdev=47.40
+    clat (usec): min=595, max=102186, avg=24269.94, stdev=13314.57
+     lat (usec): min=621, max=102211, avg=24310.44, stdev=13312.16
+    clat percentiles (usec):
+     |  1.00th=[  804],  5.00th=[ 6368], 10.00th=[ 9536], 20.00th=[13248],
+     | 30.00th=[16768], 40.00th=[19584], 50.00th=[22656], 60.00th=[25472],
+     | 70.00th=[28544], 80.00th=[33024], 90.00th=[41216], 95.00th=[48384],
+     | 99.00th=[70144], 99.50th=[76288], 99.90th=[86528], 99.95th=[94720],
+     | 99.99th=[101888]
+    lat (usec) : 750=0.73%, 1000=0.45%
+    lat (msec) : 2=0.49%, 4=1.13%, 10=8.18%, 20=30.21%, 50=54.31%
+    lat (msec) : 100=4.58%, 250=0.04%
+  cpu          : usr=0.48%, sys=0.79%, ctx=2500, majf=0, minf=2
+  IO depths    : 1=0.1%, 2=0.1%, 4=116.2%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=2469,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=4
+
+Run status group 0 (all jobs):
+   READ: bw=658KiB/s (674kB/s), 658KiB/s-658KiB/s (674kB/s-674kB/s), io=9888KiB (10.2MB), run=15023-15023msec
+
+Disk stats (read/write):
+  sdb: ios=2867/2, merge=0/1, ticks=67569/30, in_queue=66156, util=99.00%
+
+
+Testing Write Latency...
+write_latency: (g=0): rw=randwrite, bs=4096B-4096B,4096B-4096B,4096B-4096B, ioengine=libaio, iodepth=4
+fio-2.17-45-g06cb
+Starting 1 process
+
+write_latency: (groupid=0, jobs=1): err= 0: pid=64: Wed May 19 02:50:09 2021
+  write: IOPS=332, BW=1332KiB/s (1364kB/s)(19.6MiB/15010msec)
+    slat (usec): min=4, max=12981, avg=50.13, stdev=335.76
+    clat (usec): min=1283, max=22128, avg=11956.32, stdev=977.71
+     lat (usec): min=2570, max=22170, avg=12009.66, stdev=935.61
+    clat percentiles (usec):
+     |  1.00th=[ 8768],  5.00th=[ 9920], 10.00th=[11840], 20.00th=[11968],
+     | 30.00th=[11968], 40.00th=[12096], 50.00th=[12096], 60.00th=[12096],
+     | 70.00th=[12096], 80.00th=[12224], 90.00th=[12224], 95.00th=[12352],
+     | 99.00th=[14528], 99.50th=[15936], 99.90th=[20608], 99.95th=[21376],
+     | 99.99th=[22144]
+    lat (msec) : 2=0.04%, 4=0.08%, 10=4.89%, 20=94.95%, 50=0.10%
+  cpu          : usr=0.49%, sys=1.84%, ctx=5061, majf=0, minf=3
+  IO depths    : 1=0.1%, 2=0.1%, 4=117.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=0,4994,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=4
+
+Run status group 0 (all jobs):
+  WRITE: bw=1332KiB/s (1364kB/s), 1332KiB/s-1332KiB/s (1364kB/s-1364kB/s), io=19.6MiB (20.5MB), run=15010-15010msec
+
+Disk stats (read/write):
+  sdb: ios=0/5848, merge=0/3, ticks=0/67292, in_queue=65310, util=99.11%
+
+
+Testing Read Sequential Speed...
+read_seq: (g=0): rw=read, bs=1024KiB-1024KiB,1024KiB-1024KiB,1024KiB-1024KiB, ioengine=libaio, iodepth=16
+...
+fio-2.17-45-g06cb
+Starting 4 threads
+read_seq: Laying out IO file(s) (1 file(s) / 3548MiB)
+
+read_seq: (groupid=0, jobs=1): err= 0: pid=74: Wed May 19 02:50:58 2021
+   read: IOPS=27, BW=28.9MiB/s (30.3MB/s)(470MiB/16310msec)
+  cpu          : usr=0.02%, sys=0.23%, ctx=510, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.4%, 4=0.9%, 8=1.8%, 16=108.8%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=455,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+read_seq: (groupid=0, jobs=1): err= 0: pid=75: Wed May 19 02:50:58 2021
+   read: IOPS=27, BW=28.5MiB/s (29.5MB/s)(459MiB/16368msec)
+  cpu          : usr=0.03%, sys=0.22%, ctx=513, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.5%, 4=0.9%, 8=1.8%, 16=111.5%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=444,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+read_seq: (groupid=0, jobs=1): err= 0: pid=76: Wed May 19 02:50:58 2021
+   read: IOPS=27, BW=28.5MiB/s (29.9MB/s)(453MiB/15921msec)
+  cpu          : usr=0.05%, sys=0.22%, ctx=508, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.5%, 4=0.9%, 8=1.8%, 16=113.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=438,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+read_seq: (groupid=0, jobs=1): err= 0: pid=77: Wed May 19 02:50:58 2021
+   read: IOPS=27, BW=28.9MiB/s (30.3MB/s)(461MiB/15969msec)
+  cpu          : usr=0.05%, sys=0.23%, ctx=529, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.4%, 4=0.9%, 8=1.8%, 16=111.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=446,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+
+Run status group 0 (all jobs):
+   READ: bw=113MiB/s (118MB/s), 28.5MiB/s-28.9MiB/s (29.5MB/s-30.3MB/s), io=1843MiB (1933MB), run=15921-16368msec
+
+Disk stats (read/write):
+  sdb: ios=8142/2, merge=0/1, ticks=4488997/1325, in_queue=4486407, util=97.90%
+
+
+Testing Write Sequential Speed...
+write_seq: (g=0): rw=write, bs=1024KiB-1024KiB,1024KiB-1024KiB,1024KiB-1024KiB, ioengine=libaio, iodepth=16
+...
+fio-2.17-45-g06cb
+Starting 4 threads
+
+write_seq: (groupid=0, jobs=1): err= 0: pid=87: Wed May 19 02:51:18 2021
+  write: IOPS=26, BW=27.8MiB/s (29.5MB/s)(444MiB/16030msec)
+  cpu          : usr=0.89%, sys=0.31%, ctx=564, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.5%, 4=0.9%, 8=1.9%, 16=115.4%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=0,429,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+write_seq: (groupid=0, jobs=1): err= 0: pid=88: Wed May 19 02:51:18 2021
+  write: IOPS=30, BW=31.1MiB/s (33.5MB/s)(523MiB/16401msec)
+  cpu          : usr=1.04%, sys=0.37%, ctx=724, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.4%, 4=0.8%, 8=1.6%, 16=110.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=0,508,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+write_seq: (groupid=0, jobs=1): err= 0: pid=89: Wed May 19 02:51:18 2021
+  write: IOPS=29, BW=30.1MiB/s (32.5MB/s)(494MiB/15974msec)
+  cpu          : usr=1.05%, sys=0.35%, ctx=659, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.4%, 4=0.8%, 8=1.7%, 16=116.7%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=0,479,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+write_seq: (groupid=0, jobs=1): err= 0: pid=90: Wed May 19 02:51:18 2021
+  write: IOPS=30, BW=31.3MiB/s (32.8MB/s)(509MiB/16303msec)
+  cpu          : usr=0.99%, sys=0.42%, ctx=660, majf=0, minf=0
+  IO depths    : 1=0.2%, 2=0.4%, 4=0.8%, 8=1.6%, 16=113.2%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=99.8%, 8=0.0%, 16=0.2%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued rwt: total=0,494,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=16
+
+Run status group 0 (all jobs):
+  WRITE: bw=120MiB/s (126MB/s), 27.8MiB/s-31.1MiB/s (29.5MB/s-33.5MB/s), io=1970MiB (2066MB), run=15974-16401msec
+
+Disk stats (read/write):
+  sdb: ios=0/8909, merge=0/3, ticks=0/4496620, in_queue=4492190, util=99.15%
+
+
+Testing Read/Write Mixed...
+rw_mix: (g=0): rw=randrw, bs=4096B-4096B,4096B-4096B,4096B-4096B, ioengine=libaio, iodepth=64
+fio-2.17-45-g06cb
+Starting 1 process
+
+rw_mix: (groupid=0, jobs=1): err= 0: pid=100: Wed May 19 02:51:36 2021
+   read: IOPS=138, BW=566KiB/s (580kB/s)(8724KiB/15410msec)
+  write: IOPS=46, BW=188KiB/s (193kB/s)(2904KiB/15410msec)
+  cpu          : usr=0.28%, sys=1.08%, ctx=2748, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.3%, 16=0.6%, 32=1.1%, >=64=117.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwt: total=2130,714,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=566KiB/s (580kB/s), 566KiB/s-566KiB/s (580kB/s-580kB/s), io=8724KiB (8933kB), run=15410-15410msec
+  WRITE: bw=188KiB/s (193kB/s), 188KiB/s-188KiB/s (193kB/s-193kB/s), io=2904KiB (2974kB), run=15410-15410msec
+
+Disk stats (read/write):
+  sdb: ios=2527/847, merge=0/4, ticks=800263/250972, in_queue=1049513, util=99.13%
+
+
+All tests complete.
+
+==================
+= Dbench Summary =
+==================
+Random Read/Write IOPS: 161/328. BW: 17.8MiB/s / 30.9MiB/s
+Average Latency (usec) Read/Write: 24310.44/12009.66
+Sequential Read/Write: 113MiB/s / 120MiB/s
+Mixed Random Read/Write IOPS: 138/46

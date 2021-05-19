@@ -1,17 +1,17 @@
 #!/bin/bash
-# Run one storage test.
+# Run one dbench test.
 #
 # Test storage class and capacity as defined in sample.yaml:
-#     ./run-one-test.sh -t sample
+#     ./run-dbench-test.sh -t gcp-basic-dbench-standard
 # It does the following:
-# 1. Deploy a job to run dbench as sepecified in sample.yaml
-# 2. Store result to results/sample-output.txt.
-# 3. Delete the deployment in sample.yaml.
+# 1. Deploy a job to run dbench as sepecified in gcp-basic-dbench-standard.yaml.
+# 2. Store result to results/gcp-basic-dbench-standard-output.txt.
+# 3. Delete the deployment in gcp-basic-dbench-standard.yaml.
 #
-# Test storage class "premium" with 100Gi storage capacity:
-#     ./run-one-test.sh -scl premium -sca 100Gi
-# This will generate yaml file results/premium-100Gi.yaml and output file
-# results/premium-100Gi-output.txt.
+# Test storage class "standard" with 100Gi storage capacity:
+#     ./run-one-test.sh -scl standard -sca 100Gi
+# This will generate yaml file results/standard-100Gi.yaml and output file
+# results/standard-100Gi-output.txt.
 
 # Print command
 set -x

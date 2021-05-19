@@ -1,10 +1,15 @@
 #!/bin/bash
+# Create/delete GKE clusters.
+#
+# Sample command:
+#     ./gcp-cluster.sh create mycluster
+#     ./gcp-cluster.sh delete mycluster
 
 # Print command
 set -x
 
 ACTION=${1:-create}
-CLUSTER=${2:-cluster}
+CLUSTER=${2:-mycluster}
 
 case "${ACTION}" in
 

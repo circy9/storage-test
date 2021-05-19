@@ -2,7 +2,7 @@
 # Run storage tests.
 #
 # Sample command:
-#     ./run-tests.sh
+#     ./gcp-basic-run-dbench-tests.sh
 
 # Print command
 set -x
@@ -10,7 +10,7 @@ set -x
 ##########################
 # Get input params.
 ##########################
-STORAGE_CLASS=('standard'  'standard-rwo' 'premium-rwo')
+STORAGE_CLASS=('standard' 'standard-rwo' 'premium-rwo')
 # 500Gi is the max for standard-rwo and premium-rwo in a zone like us-west1-a.
 STORAGE_CAPACITY=('10Gi' '100Gi' '500Gi')
 
@@ -19,6 +19,6 @@ STORAGE_CAPACITY=('10Gi' '100Gi' '500Gi')
 ##########################
 for i in "${STORAGE_CLASS[@]}"; do
     for j in "${STORAGE_CAPACITY[@]}"; do
-        ./run-one-test.sh -scl ${i} -sca ${j}
+        ./run-dbench-test.sh -scl ${i} -sca ${j}
     done
 done

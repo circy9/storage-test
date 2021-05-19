@@ -1,26 +1,31 @@
-# dbench tests: single
+# Set up cluster
+```bash
+./gcp-cluster.sh create mycluster
+```
+
+# Run dbench tests: single
 
 ## Test steps
 ```bash
-./run-one-test.sh -t gcp-sample
+./run-dbench-test.sh -t gcp-basic-dbench-standard
 ```
 
 ## Test results
 
-See results/gcp-sample-output.txt.
+See results/gcp-basic-dbench-standard-output.txt.
 
-# dbench tests: multiple
+# Run dbench tests: multiple
 
 ## Test steps
 ```bash
-./gcp-run-tests.sh
+./gcp-basic-run-dbench-tests.sh
 ```
 
 ## Test results
 
 See results/{storage-class}-{storage-capacity}-output.txt.
 
-# Manual tests
+# Run manual tests
 
 ## Test steps
 
@@ -83,6 +88,14 @@ real    0m3.831s
 user    0m0.511s
 sys     0m0.305s
 
+real    0m3.845s
+user    0m0.519s
+sys     0m0.344s
+
+real    0m3.855s
+user    0m0.537s
+sys     0m0.353s
+
 root@nginx:/mnt/standard# time ( du wordpress/ | tail -1 && rm -rf wordpress )
 57792   wordpress/
 
@@ -118,6 +131,15 @@ root@nginx:/mnt/standard-rwo# time ( wget -qO- https://wordpress.org/latest.tar.
 real    0m4.811s
 user    0m0.520s
 sys     0m0.432s
+
+real    0m3.720s
+user    0m0.499s
+sys     0m0.347s
+
+real    0m3.850s
+user    0m0.532s
+sys     0m0.320s
+
 root@nginx:/mnt/standard-rwo# time ( du wordpress/ | tail -1 && rm -rf wordpress )
 57792   wordpress/
 
@@ -153,10 +175,31 @@ real    0m4.073s
 user    0m0.521s
 sys     0m0.403s
 
+real    0m3.880s
+user    0m0.507s
+sys     0m0.360s
+
+real    0m5.661s
+user    0m0.520s
+sys     0m0.357s
+
+real    0m3.804s
+user    0m0.510s
+sys     0m0.355s
+
+real    0m3.796s
+user    0m0.518s
+sys     0m0.342s
+
 root@nginx:/mnt/premium-rwo# time ( du wordpress/ | tail -1 && rm -rf wordpress )
 57792   wordpress/
 
 real    0m0.278s
 user    0m0.005s
 sys     0m0.079s
+```
+
+# Clean up cluster
+```bash
+./gcp-cluster.sh delete mycluster
 ```

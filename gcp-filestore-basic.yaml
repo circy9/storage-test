@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: filestore-hdd-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: 10.157.205.42
+    path: /hdd
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: filestore-hdd-pvc
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+    - mountPath: "/mnt/filestore-hdd"
+      name: filestore-hdd-volume
+  volumes:
+    - name: filestore-hdd-volume
+      persistentVolumeClaim:
+        claimName: filestore-hdd-pvc
