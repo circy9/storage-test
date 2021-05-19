@@ -1,4 +1,5 @@
-# Set up cluster
+# Create a cluster
+
 ```bash
 ./gcp-cluster.sh create mycluster
 ```
@@ -6,6 +7,7 @@
 # Run dbench tests: single
 
 ## Test steps
+
 ```bash
 ./run-dbench-test.sh -t gcp-basic-dbench-standard
 ```
@@ -17,6 +19,7 @@ See results/gcp-basic-dbench-standard-output.txt.
 # Run dbench tests: multiple
 
 ## Test steps
+
 ```bash
 ./gcp-basic-run-dbench-tests.sh
 ```
@@ -28,8 +31,6 @@ See results/{storage-class}-{storage-capacity}-output.txt.
 # Run manual tests
 
 ## Test steps
-
-## Test results
 
 ```bash
 # 1. Create a pod.
@@ -199,7 +200,8 @@ user    0m0.005s
 sys     0m0.079s
 ```
 
-# Clean up cluster
+# Delete the cluster
+
 ```bash
 ./gcp-cluster.sh delete mycluster
 ```
