@@ -14,7 +14,9 @@
 
 ## Test results
 
-See results/azure-basic-dbench-default-output.txt.
+```bash
+tail results/azure-basic-dbench-default-output.txt
+```
 
 # Run dbench tests: multiple
 
@@ -85,5 +87,10 @@ kubectl delete -f azure-basic.yaml
 ```bash
 ./az.sh delete cluster AKSTest
 ```
+
+# FAQ
+
+*  Error: The subscription is not registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
+*  Solution: 
 
 

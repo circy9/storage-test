@@ -1,9 +1,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: standard-pvc
+  name: default-pvc
 spec:
-  storageClassName: standard
+  storageClassName: default
   accessModes:
     - ReadWriteOnce
   resources:
@@ -13,9 +13,9 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: standard-rwo-pvc
+  name: managed-premium-pvc
 spec:
-  storageClassName: standard-rwo
+  storageClassName: managed-premium
   accessModes:
     - ReadWriteOnce
   resources:
@@ -25,11 +25,23 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: premium-rwo-pvc
+  name: azurefile-pvc
 spec:
-  storageClassName: premium-rwo
+  storageClassName: azurefile
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: azurefile-premium-pvc
+spec:
+  storageClassName: azurefile-premium
+  accessModes:
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
@@ -50,19 +62,24 @@ spec:
         cpu: 250m
         memory: 256Mi
     volumeMounts:
-    - mountPath: "/mnt/standard"
-      name: standard-volume
-    - mountPath: "/mnt/standard-rwo"
-      name: standard-rwo-volume
-    - mountPath: "/mnt/premium-rwo"
-      name: premium-rwo-volume
+    - mountPath: "/mnt/default"
+      name: default-volume
+    - mountPath: "/mnt/managed-premium"
+      name: managed-premium-volume
+    - mountPath: "/mnt/azurefile"
+      name: azurefile-volume
+    - mountPath: "/mnt/azurefile-premium"
+      name: azurefile-premium-volume
   volumes:
-    - name: standard-volume
+    - name: default-volume
       persistentVolumeClaim:
-        claimName: standard-pvc
-    - name: standard-rwo-volume
+        claimName: default-pvc
+    - name: managed-premium-volume
       persistentVolumeClaim:
-        claimName: standard-rwo-pvc
-    - name: premium-rwo-volume
+        claimName: managed-premium-pvc
+    - name: azurefile-volume
       persistentVolumeClaim:
-        claimName: premium-rwo-pvc
+        claimName: azurefile-pvc
+    - name: azurefile-premium-volume
+      persistentVolumeClaim:
+        claimName: azurefile-premium-pvc

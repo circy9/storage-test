@@ -82,6 +82,7 @@ function main() {
   case "${action}" in
 
     'create')
+      az group create --location westus --resource-group ${resource_group}
       # Create a cluster.
       az aks list -o table
       create_cluster "${name}" "${resource_group}"
@@ -91,6 +92,7 @@ function main() {
       ;;
       
     'create-csi')
+      az group create --location westus --resource-group ${resource_group}
       # Create a cluster.
       az aks list -o table
       create_csi_cluster "${name}" "${resource_group}"
@@ -100,6 +102,7 @@ function main() {
       ;;
       
     'delete')
+      az group delete -f --resource-group ${resource_group}
       # Delete the cluster.
       delete_cluster "${name}" "${resource_group}"
       ;;

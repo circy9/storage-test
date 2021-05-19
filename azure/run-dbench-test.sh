@@ -1,12 +1,12 @@
 #!/bin/bash
 # Run one storage test.
 #
-# Test storage class and capacity as defined in sample.yaml:
-#     ./run-one-test.sh -t sample
+# Test storage class and capacity as defined in azure-basic-dbench-default.yaml:
+#     ./run-dbench-test.sh -t azure-basic-dbench-default
 # It does the following:
-# 1. Deploy a job to run dbench as sepecified in sample.yaml
-# 2. Store result to results/sample-output.txt.
-# 3. Delete the deployment in sample.yaml.
+# 1. Deploy a job to run dbench as sepecified in azure-basic-dbench-default.yaml.
+# 2. Store result to results/azure-basic-dbench-default-output.txt.
+# 3. Delete the deployment in azure-basic-dbench-default.yaml.
 #
 # Test storage class "premium" with 100Gi storage capacity:
 #     ./run-one-test.sh -scl premium -sca 100Gi
@@ -108,13 +108,13 @@ if [[ -z ${test} ]]; then
         test="${storage_class}-${storage_capacity}"
         yaml_file="results/${test}.yaml"
         echo "Generate & use ${yaml_file}"
-        awk -v scl=${storage_class} -v sca=${storage_capacity} '{gsub("STORAGE_CLASS",scl);gsub("STORAGE_CAPACITY",sca);print}' template.yaml > ${yaml_file}
+        awk -v scl=${storage_class} -v sca=${storage_capacity} '{gsub("STORAGE_CLASS",scl);gsub("STORAGE_CAPACITY",sca);print}' azure-basic-template.yaml > ${yaml_file}
     # Use NFS server.
     else
         test="nfs-${storage_capacity}"
         yaml_file="results/${test}.yaml"
         echo "Generate & use ${yaml_file}"
-        awk -v nfs=${nfs_server_internal_ip} -v sca=${storage_capacity} '{gsub("NFS_SERVER_INTERNAL_IP",nfs);gsub("STORAGE_CAPACITY",sca);print}' template-nfs.yaml > ${yaml_file}
+        awk -v nfs=${nfs_server_internal_ip} -v sca=${storage_capacity} '{gsub("NFS_SERVER_INTERNAL_IP",nfs);gsub("STORAGE_CAPACITY",sca);print}' azure-nsf-template.yaml > ${yaml_file}
     fi
 # Use sample yaml files.
 else
