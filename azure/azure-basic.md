@@ -90,7 +90,13 @@ kubectl delete -f azure-basic.yaml
 
 # FAQ
 
-*  Error: The subscription is not registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
-*  Solution: 
+* Error: The subscription is not registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
 
+...Solution: Register for Microsoft.Storage following: https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/error-register-resource-provider
 
+* Error: storage.FileSharesClient#Create: Failure responding to request: StatusCode=400 -- Original Error: autorest/azure: Service returned an error. Status=400 Code="InvalidHeaderValue" Message="The value for one of the HTTP headers is not in the correct format.\nRequestId:e50728d6-e01a-00f7-21ea-4c5041000000\nTime:2021-05-19T20:03:58.8105248Z
+
+...Root cause: azurefile-premium requires at least 100GB: https://docs.microsoft.com/en-us/azure/aks/azure-files-dynamic-pv
+
+...Solution: Set storage capacity in the persistent volume claim to be 100GB or
+   more.
