@@ -44,7 +44,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
+      storage: 100Gi
 ---
 kind: Pod
 apiVersion: v1
