@@ -139,5 +139,5 @@ $ kubectl get pvc
 NAME          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 default-pvc   Bound    pvc-cd7076d8-f717-457c-81a9-6e24a0720d4b   100Gi      RWO            default        131m
 nfs-pvc       Bound    pvc-3aa7b468-a71b-423d-ad3a-edb7d113c1a6   80Gi       RWX            example-nfs    12s
-nfs-pvc2      Bound    pvc-cebc7ffa-de2d-4b4f-b246-d9a1e259df4c   80Gi       RWX            example-nfs    9s```
+nfs-pvc2      Bound    pvc-cebc7ffa-de2d-4b4f-b246-d9a1e259df4c   80Gi       RWX            example-nfs    9s
 ```
