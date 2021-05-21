@@ -37,7 +37,3 @@ kubectl delete -f statefulset.yaml
 kubectl delete -f rbac.yaml
 kubectl delete -f psp.yaml
 ```
-
-
-
-
