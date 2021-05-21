@@ -1,0 +1,68 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: noserverino-pvc
+spec:
+  storageClassName: noserverino
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: loose30-pvc
+spec:
+  storageClassName: loose30
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: loose0-pvc
+spec:
+  storageClassName: loose0
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+    - mountPath: "/mnt/noserverino"
+      name: noserverino-volume
+    - mountPath: "/mnt/loose30"
+      name: loose30-volume
+    - mountPath: "/mnt/loose0"
+      name: loose0-volume
+  volumes:
+    - name: noserverino-volume
+      persistentVolumeClaim:
+        claimName: noserverino-pvc
+    - name: loose30-volume
+      persistentVolumeClaim:
+        claimName: loose30-pvc
+    - name: loose0-volume
+      persistentVolumeClaim:
+        claimName: loose0-pvc
