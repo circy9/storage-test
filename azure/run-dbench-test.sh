@@ -28,7 +28,6 @@ Run the specified test and write the result to a txt file.
 
     -h                      display this help and exit
     -t TEST                 run the specified test, e.g., "sample-10"
-    -nfs IP                 internal IP of the NFS server
     -scl STORAGE_CLASS      storage class name, e.g., "default" or "premium"
     -sca STORAGE_CAPACITY   storage capacity, e.g., "10Gi" or "1Ti"
 EOF
@@ -41,7 +40,6 @@ die() {
 
 # Initialize all the option variables.
 test=
-nfs_server_internal_ip=
 storage_class="default"
 storage_capacity="10Gi"
 
@@ -51,15 +49,6 @@ while :; do
         -h)
             show_help
             exit
-            ;;
-        -nfs)
-            if [[ $2 ]]; then
-                nfs_server_internal_ip=$2
-		echo "NFS server internal IP is ${nfs_server_internal_ip}."
-                shift
-            else
-                die 'ERROR: "-nfs" requires a non-empty option argument.'
-            fi
             ;;
         -scl)       # Takes an option argument; ensure it has been specified.
             if [[ $2 ]]; then
@@ -103,19 +92,10 @@ done
 
 # Construct yaml files.
 if [[ -z ${test} ]]; then
-    # Use default storage class.
-    if [[ -z ${nfs_server_internal_ip} ]]; then
-        test="${storage_class}-${storage_capacity}"
-        yaml_file="results/${test}.yaml"
-        echo "Generate & use ${yaml_file}"
-        awk -v scl=${storage_class} -v sca=${storage_capacity} '{gsub("STORAGE_CLASS",scl);gsub("STORAGE_CAPACITY",sca);print}' azure-basic-template.yaml > ${yaml_file}
-    # Use NFS server.
-    else
-        test="nfs-${storage_capacity}"
-        yaml_file="results/${test}.yaml"
-        echo "Generate & use ${yaml_file}"
-        awk -v nfs=${nfs_server_internal_ip} -v sca=${storage_capacity} '{gsub("NFS_SERVER_INTERNAL_IP",nfs);gsub("STORAGE_CAPACITY",sca);print}' azure-nsf-template.yaml > ${yaml_file}
-    fi
+    test="${storage_class}-${storage_capacity}"
+    yaml_file="results/${test}.yaml"
+    echo "Generate & use ${yaml_file}"
+    awk -v scl=${storage_class} -v sca=${storage_capacity} '{gsub("STORAGE_CLASS",scl);gsub("STORAGE_CAPACITY",sca);print}' azure-basic-template.yaml > ${yaml_file}
 # Use sample yaml files.
 else
     yaml_file="${test}.yaml"
