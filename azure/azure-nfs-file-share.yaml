@@ -1,0 +1,34 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nfs-file-share-pvc
+spec:
+  storageClassName: azurefile-csi-nfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+    - mountPath: "/mnt/nfs-file-share"
+      name: nfs-file-share-volume
+  volumes:
+    - name: nfs-file-share-volume
+      persistentVolumeClaim:
+        claimName: nfs-file-share-pvc

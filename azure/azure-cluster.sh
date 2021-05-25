@@ -44,6 +44,7 @@ function create_csi_cluster {
     -k ${LATEST_VERSION} \
     --no-ssh-key \
     --enable-managed-identity \
+    --network-plugin azure \
     --aks-custom-headers EnableAzureDiskFileCSIDriver=true \
     --node-count 1
   echo "Created ${name} in ${resource_group} ..."
