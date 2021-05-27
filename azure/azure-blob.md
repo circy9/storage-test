@@ -3,7 +3,7 @@
 ## Create a cluster
 
 ```bash
-./azure-cluster.sh create-csi ciscluster BlobfuseTest 3
+./azure-cluster.sh create-csi ciscluster BlobTest 3
 ```
 
 ## Set up storage account
@@ -23,18 +23,18 @@ $ az storage account list | grep name
 Find your storage keys to be used below to create storage classes:
 ```
 kubectl create secret generic azure-secret --from-literal accountname=standard5150 --from-literal accountkey="find in access keys of your storage account" --type=Opaque
-kubectl create -f blobfuse/blob-storage-class.yaml
+kubectl create -f blob/blob-storage-class.yaml
 
 kubectl create secret generic azure-secret-premium --from-literal accountname=premium5150 --from-literal accountkey="find in access keys of your storage account" --type=Opaque
-kubectl create -f blobfuse/blob-premium-storage-class.yaml
+kubectl create -f blob/blob-premium-storage-class.yaml
 ```
 
-## Install Blobfuse
+## Install Blob CSI driver
 
 Reference: https://github.com/kubernetes-sigs/blob-csi-driver/blob/master/docs/install-csi-driver-v1.2.0.md
 
 ```
-# Install Blobfuse
+# Install Blob
 curl -skSL https://raw.githubusercontent.com/kubernetes-sigs/blob-csi-driver/v1.2.0/deploy/install-driver.sh | bash -s v1.2.0 --
 # Make sure everything is running
 kubectl -n kube-system get po
@@ -54,13 +54,15 @@ Reference: https://github.com/kubernetes-sigs/blob-csi-driver/blob/master/deploy
 ## Test steps
 
 ```bash
-./run-dbench-test.sh -t azure-blobfuse-dbench-default
+./run-dbench-test.sh -t azure-blob-dbench-default
 ```
 
 ## Test results
 
+FAILED. See FAQ error 2.
+
 ```bash
-grep -A 5 Summary results/azure-blobfuse-dbench-default-output.txt
+grep -A 5 Summary results/azure-blob-dbench-default-output.txt
 ```
 
 # Run dbench tests: multiple
@@ -68,10 +70,12 @@ grep -A 5 Summary results/azure-blobfuse-dbench-default-output.txt
 ## Test steps
 
 ```bash
-./azure-blobfuse-run-dbench-tests.sh
+./azure-blob-run-dbench-tests.sh
 ```
 
 ## Test results
+
+FAILED. See FAQ error 2.
 
 ```bash
 grep -A 5 Summary results/azure-blob-*
@@ -83,14 +87,14 @@ grep -A 5 Summary results/azure-blob-*
 
 ```bash
 # 1. Create a pod.
-kubectl apply -f azure-blobfuse.yaml
+kubectl apply -f azure-blob.yaml
 
 # 2. Install wget.
 kubectl -it exec pod/nginx -- bash
 apt update && apt install wget
 
-# 3. Go to /mnt/blobfuse.
-cd /mnt/blobfuse
+# 3. Go to /mnt/blob.
+cd /mnt/blob
 
 # 4. Write 2GB to file1, copy to file2 and delete both files.
 dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -106,10 +110,10 @@ Here are the sizes of the file before and after unzip:
 56M     wordpress
 52034   wordpress/
 
-# 6. Repeat 3-5 for /mnt/blobfuse-premium.
+# 6. Repeat 3-5 for /mnt/blob-premium.
 
 # 7. Delete the pod.
-kubectl delete -f azure-blobfuse.yaml
+kubectl delete -f azure-blob.yaml
 ```
 
 ## Test results
@@ -200,7 +204,7 @@ sys     0m0.310s
 
 # Clean up
 
-## Uninstall Blobfuse
+## Uninstall Blob CSI driver
 
 ```
 curl -skSL https://raw.githubusercontent.com/kubernetes-sigs/blob-csi-driver/v1.2.0/deploy/uninstall-driver.sh | bash -s v1.2.0 --
@@ -211,7 +215,7 @@ Reference: https://github.com/kubernetes-sigs/blob-csi-driver/blob/master/docs/i
 ## Delete the cluster
 
 ```bash
-./azure-cluster.sh delete ciscluster BlobfuseTest
+./azure-cluster.sh delete ciscluster BlobTest
 ```
 
 # FAQ
@@ -237,7 +241,7 @@ and assign it the "Contributor" role for resource group "MC_...".
 Couldn't figure out why.
 
 ```
-$ kubectl apply -f azure-blobfuse-dbench-default.yaml
+$ kubectl apply -f azure-blob-dbench-default.yaml
 $ kubectl logs pod/dbench-job-wtvlk
 Working dir: /data
 

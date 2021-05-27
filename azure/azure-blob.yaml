@@ -50,9 +50,9 @@ spec:
         cpu: 250m
         memory: 256Mi
     volumeMounts:
-    - mountPath: "/mnt/blobfuse"
+    - mountPath: "/mnt/blob"
       name: blobfuse-volume
-    - mountPath: "/mnt/blobfuse-premium"
+    - mountPath: "/mnt/blob-premium"
       name: blobfuse-premium-volume
     - mountPath: "/mnt/default"
       name: default-volume
