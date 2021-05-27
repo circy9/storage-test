@@ -54,10 +54,8 @@ Reference: https://github.com/kubernetes-sigs/blob-csi-driver/blob/master/deploy
 
 ## Test results
 
-FAILED. See FAQ error 2.
-
 ```bash
-grep -A 5 Summary results/azure-blob-dbench-default-output.txt
+grep -A 5 Summary results/azure-blob-nfs-dbench-default-output.txt
 ```
 
 # Run dbench tests: multiple
@@ -65,15 +63,13 @@ grep -A 5 Summary results/azure-blob-dbench-default-output.txt
 ## Test steps
 
 ```bash
-./azure-blob-run-dbench-tests.sh
+./azure-blob-nfs-run-dbench-tests.sh
 ```
 
 ## Test results
 
-FAILED. See FAQ error 2.
-
 ```bash
-grep -A 5 Summary results/azure-blob-*
+grep -A 5 Summary results/azure-blob-nfs-*
 ```
 
 # Run manual tests

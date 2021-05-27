@@ -10,7 +10,7 @@ set -x
 ##########################
 # Get input params.
 ##########################
-STORAGE_CLASS=('blob' 'blob' 'blob' 'blob-premium' 'blob-premium')
+STORAGE_CLASS=('blob' 'blob-premium' 'blob' 'blob-premium' 'blob' 'blob-premium')
 STORAGE_CAPACITY=('100Gi' '500Gi' '1Ti')
 
 ##########################
@@ -18,6 +18,6 @@ STORAGE_CAPACITY=('100Gi' '500Gi' '1Ti')
 ##########################
 for i in "${STORAGE_CLASS[@]}"; do
     for j in "${STORAGE_CAPACITY[@]}"; do
-        ./run-dbench-test.sh -scl ${i} -sca ${j}
+        ./run-dbench-test.sh -scl ${i} -sca ${j} -tmpl azure-blob-template.yaml
     done
 done

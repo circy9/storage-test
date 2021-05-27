@@ -164,6 +164,3 @@ sys     0m0.428s
 ```
 
 # FAQ
-
-* Error: 
-...Solution:

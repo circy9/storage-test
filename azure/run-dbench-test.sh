@@ -42,6 +42,7 @@ die() {
 test=
 storage_class="default"
 storage_capacity="10Gi"
+template="azure-basic-template.yaml"
 
 # From: https://mywiki.wooledge.org/BashFAQ/035
 while :; do
@@ -53,7 +54,7 @@ while :; do
         -scl)       # Takes an option argument; ensure it has been specified.
             if [[ $2 ]]; then
                 storage_class=$2
-		echo ${storage_class}
+                echo "Storage class: ${storage_class}"
                 shift
             else
                 die 'ERROR: "-scl" requires a non-empty option argument.'
@@ -62,7 +63,7 @@ while :; do
         -sca)       # Takes an option argument; ensure it has been specified.
             if [[ $2 ]]; then
                 storage_capacity=$2
-		echo ${storage_capacity}
+                echo "Storage capacity: ${storage_capacity}"
                 shift
             else
                 die 'ERROR: "-sca" requires a non-empty option argument.'
@@ -71,9 +72,19 @@ while :; do
         -t)       # Takes an option argument; ensure it has been specified.
             if [[ $2 ]]; then
                 test=$2
+                echo "Test file: ${test}.yaml"
                 shift
             else
-                die 'ERROR: "--test" requires a non-empty option argument.'
+                die 'ERROR: "-t" requires a non-empty option argument.'
+            fi
+            ;;
+        -tmpl)
+            if [[ $2 ]]; then
+                template=$2
+                echo "Template: ${template}"
+                shift
+            else
+                die 'ERROR: "-tmpl" requires a non-empty option argument.'
             fi
             ;;
         --)              # End of all options.
@@ -95,7 +106,7 @@ if [[ -z ${test} ]]; then
     test="${storage_class}-${storage_capacity}"
     yaml_file="results/${test}.yaml"
     echo "Generate & use ${yaml_file}"
-    awk -v scl=${storage_class} -v sca=${storage_capacity} '{gsub("STORAGE_CLASS",scl);gsub("STORAGE_CAPACITY",sca);print}' azure-basic-template.yaml > ${yaml_file}
+    awk -v scl=${storage_class} -v sca=${storage_capacity} '{gsub("STORAGE_CLASS",scl);gsub("STORAGE_CAPACITY",sca);print}' ${template} > ${yaml_file}
 # Use sample yaml files.
 else
     yaml_file="${test}.yaml"
