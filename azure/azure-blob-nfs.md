@@ -1,3 +1,5 @@
+Note: This is Standard LRS by default.
+
 # Set up
 
 ## Create a cluster
@@ -116,19 +118,37 @@ kubectl delete -f azure-blob.yaml
 ```bash
 root@nginx:/mnt/default# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
 2048000000 bytes (2.0 GB, 1.9 GiB) copied, 13.0426 s, 157 MB/s
+2048000000 bytes (2.0 GB, 1.9 GiB) copied, 12.708 s, 161 MB/s
 
 root@nginx:/mnt/nfs-file-share# dd if=file1 of=file2 bs=8k count=250000 && sync 
 2048000000 bytes (2.0 GB, 1.9 GiB) copied, 70.6451 s, 29.0 MB/s
+2048000000 bytes (2.0 GB, 1.9 GiB) copied, 72.9389 s, 28.1 MB/s
 
 root@nginx:/mnt/default# time ( wget -qO- https://wordpress.org/latest.tar.gz | tar xvz -C . 2>&1 > /dev/null )
 real    5m9.380s
 user    0m0.717s
 sys     0m1.244s
 
+real    5m12.331s
+user    0m0.742s
+sys     0m1.330s
+
+real    5m12.982s
+user    0m0.727s
+sys     0m1.511s
+
 root@nginx:/mnt/default# time ( du wordpress/ | tail -1 && rm -rf wordpress )
 real    0m57.310s
 user    0m0.030s
 sys     0m0.353s
+
+real    1m1.161s
+user    0m0.040s
+sys     0m0.401s
+
+real    0m56.157s
+user    0m0.039s
+sys     0m0.401s
 ```
 
 # Clean up
@@ -148,14 +168,3 @@ Reference: https://github.com/kubernetes-sigs/blob-csi-driver/blob/master/docs/i
 ```
 
 # FAQ
-
-## Error: Can't create PVC
-
-Error: The client '1d8d18a4-2ba0-4b6d-8e10-37bbf97842fb' with object id '1d8d18a4-2ba0-4b6d-8e10-37bbf97842fb' does not have authorization to perform action 'Microsoft.Storage/storageAccounts/read' over scope
-
-See the errors from logs: 
-```
-kubectl logs deploy/csi-blob-controller -c blob -f -n kube-system
-kubectl logs daemonset/csi-blob-node -c blob -n kube-system -f
-```
-
