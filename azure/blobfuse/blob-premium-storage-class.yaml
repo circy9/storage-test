@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: blob-premium
+provisioner: blob.csi.azure.com
+parameters:
+  csi.storage.k8s.io/provisioner-secret-name: azure-secret-premium
+  csi.storage.k8s.io/provisioner-secret-namespace: default
+  csi.storage.k8s.io/node-stage-secret-name: azure-secret-premium
+  csi.storage.k8s.io/node-stage-secret-namespace: default

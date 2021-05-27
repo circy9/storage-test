@@ -1,0 +1,68 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: blobfuse-pvc
+spec:
+  storageClassName: blob
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: blobfuse-premium-pvc
+spec:
+  storageClassName: blob-premium
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: default-pvc
+spec:
+  storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+    - mountPath: "/mnt/blobfuse"
+      name: blobfuse-volume
+    - mountPath: "/mnt/blobfuse-premium"
+      name: blobfuse-premium-volume
+    - mountPath: "/mnt/default"
+      name: default-volume
+  volumes:
+    - name: blobfuse-volume
+      persistentVolumeClaim:
+        claimName: blobfuse-pvc
+    - name: blobfuse-premium-volume
+      persistentVolumeClaim:
+        claimName: blobfuse-premium-pvc
+    - name: default-volume
+      persistentVolumeClaim:
+        claimName: default-pvc
