@@ -1,3 +1,4 @@
+Reference: https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner/blob/master/docs/deployment.md#in-kubernetes---statefulset-of-1-replica
 # Create a cluster with nfs storage class
 
 ```bash
