@@ -1,19 +1,6 @@
 ========================
 Tue 18 May 2021 10:06:56 AM PDT
 ========================
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: dbench-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: 172.21.209.242
-    path: /data
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -382,19 +369,6 @@ Mixed Random Read/Write IOPS: 4800/1572
 ========================
 Tue 18 May 2021 11:49:08 AM PDT
 ========================
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: dbench-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: 10.157.205.42
-    path: /hdd
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -762,19 +736,6 @@ Mixed Random Read/Write IOPS: 4662/1571
 ========================
 Tue 18 May 2021 07:43:09 PM PDT
 ========================
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: dbench-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  nfs:
-    server: 10.157.205.42
-    path: /hdd
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
