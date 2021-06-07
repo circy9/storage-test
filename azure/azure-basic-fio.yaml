@@ -1,0 +1,88 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: default-pvc1
+spec:
+  storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: managed-premium-pvc
+spec:
+  storageClassName: managed-premium
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: azurefile-pvc
+spec:
+  storageClassName: azurefile
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: azurefile-premium-pvc
+spec:
+  storageClassName: azurefile-premium
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: fio
+spec:
+  containers:
+  - name: fio
+    image: dmonakhov/alpine-fio
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do sleep 60; done"]
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+    volumeMounts:
+    - mountPath: "/mnt/default"
+      name: default-volume
+    - mountPath: "/mnt/managed-premium"
+      name: managed-premium-volume
+    - mountPath: "/mnt/azurefile"
+      name: azurefile-volume
+    - mountPath: "/mnt/azurefile-premium"
+      name: azurefile-premium-volume
+  volumes:
+    - name: default-volume
+      persistentVolumeClaim:
+        claimName: default-pvc1
+    - name: managed-premium-volume
+      persistentVolumeClaim:
+        claimName: managed-premium-pvc
+    - name: azurefile-volume
+      persistentVolumeClaim:
+        claimName: azurefile-pvc
+    - name: azurefile-premium-volume
+      persistentVolumeClaim:
+        claimName: azurefile-premium-pvc
+  restartPolicy: Never
