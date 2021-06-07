@@ -1,6 +1,6 @@
 # Create a cluster with 2 nodes
 ```
-../az-cluster.sh create cluster DiskTest 2
+../azure-cluster.sh create dluster DiskTest 2
 ```
 
 # Test 1: Will the disk be detached if we delete the corresponding pod? Yes!
@@ -55,9 +55,10 @@ Events:
 
 ## Make sure we have two instances.
 ```
-az vmss scale --name aks-nodepool1-25399436-vmss --resource-group MC_DISKTEST_DLUSTER_WESTUS --new-capacity 2
-
-az vmss list-instances --resource-group MC_DISKTEST_DLUSTER_WESTUS --name aks-nodepool1-25399436-vmss -o table
+export RG=MC_DISKTEST_DCLUSTER_WESTUS
+export VMSS=aks-nodepool1-37131424-vmss
+az vmss scale --resource-group ${RG} --name ${VMSS} --new-capacity 2
+az vmss list-instances --resource-group ${RG} --name ${VMSS} -o table
 ```
 
 ## Delete the instance running the pod.
@@ -67,10 +68,12 @@ az vmss list-instances --resource-group MC_DISKTEST_DLUSTER_WESTUS --name aks-no
 kubectl get service
 
 # Ping the external IP.
-while true; do nc -vz -w 1 40.112.188.4 80; date; sleep 1; done;
+export IP=104.45.209.49
+while true; do nc -vz -w 1 ${IP} 80; date; sleep 1; done;
 
 # Delete the instance. 
-az vmss delete-instances --instance-ids 0 --name aks-nodepool1-25399436-vmss --resource-group MC_DiskTest_dluster_westus && date
+az vmss delete-instances --instance-ids 0 --name ${VMSS} --resource-group ${RG} && date
+Mon Jun  7 15:55:28 PDT 2021
 ```
 
 ## Verified that Disk is attached to instance 1.
@@ -205,7 +208,62 @@ Connection to 40.112.188.4 port 80 [tcp/http] succeeded!
 kubectl delete -f nginx-stateful-set.yaml
 ```
 
+## Result from a second run
+
+```
+❯ while true; do nc -vz -w 1 ${IP} 80; date; sleep 1; done;
+Connection to 104.45.209.49 port 80 [tcp/http] succeeded!
+Mon Jun  7 15:54:34 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Connection refused
+Mon Jun  7 15:54:51 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 15:56:07 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 15:57:24 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 15:58:40 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 15:59:56 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 16:01:13 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 16:02:29 PDT 2021
+nc: connectx to 104.45.209.49 port 80 (tcp) failed: Operation timed out
+Mon Jun  7 16:03:45 PDT 2021
+Connection to 104.45.209.49 port 80 [tcp/http] succeeded!
+Mon Jun  7 16:04:54 PDT 2021
+Connection to 104.45.209.49 port 80 [tcp/http] succeeded!
+Mon Jun  7 16:04:55 PDT 2021
+```
+
+```
+❯ kubectl get events --sort-by='.lastTimestamp'
+17m         Normal    SuccessfulCreate          statefulset/nginx                                      create Claim default-nginx-0 Pod nginx-0 in StatefulSet nginx success
+17m         Normal    ProvisioningSucceeded     persistentvolumeclaim/default-nginx-0                  Successfully provisioned volume pvc-4ccf6b30-a445-415a-98f2-35cef3c030ae
+17m         Normal    Scheduled                 pod/nginx-0                                            Successfully assigned default/nginx-0 to aks-nodepool1-37131424-vmss000000
+17m         Normal    SuccessfulAttachVolume    pod/nginx-0                                            AttachVolume.Attach succeeded for volume "pvc-4ccf6b30-a445-415a-98f2-35cef3c030ae"
+17m         Normal    EnsuredLoadBalancer       service/nginx                                          Ensured load balancer
+16m         Normal    Pulling                   pod/nginx-0                                            Pulling image "nginx"
+16m         Normal    Pulled                    pod/nginx-0                                            Successfully pulled image "nginx" in 5.939936495s
+16m         Normal    Created                   pod/nginx-0                                            Created container nginx
+16m         Normal    Started                   pod/nginx-0                                            Started container nginx
+10m         Warning   NodeNotReady              pod/nginx-0                                            Node is not ready
+10m         Normal    NodeNotReady              node/aks-nodepool1-37131424-vmss000000                 Node aks-nodepool1-37131424-vmss000000 status is now: NodeNotReady
+10m         Normal    UpdatedLoadBalancer       service/nginx                                          Updated load balancer with new hosts
+10m         Normal    RemovingNode              node/aks-nodepool1-37131424-vmss000000                 Node aks-nodepool1-37131424-vmss000000 event: Removing Node aks-nodepool1-37131424-vmss000000 from Controller
+10m         Normal    DeletingNode              node/aks-nodepool1-37131424-vmss000000                 Deleting node aks-nodepool1-37131424-vmss000000 because it does not exist in the cloud provider
+9m51s       Warning   FailedAttachVolume        pod/nginx-0                                            Multi-Attach error for volume "pvc-4ccf6b30-a445-415a-98f2-35cef3c030ae" Volume is already exclusively attached to one node and can't be attached to another
+9m51s       Normal    SuccessfulCreate          statefulset/nginx                                      create Pod nginx-0 in StatefulSet nginx successful
+9m51s       Normal    Scheduled                 pod/nginx-0                                            Successfully assigned default/nginx-0 to aks-nodepool1-37131424-vmss000001
+3m34s       Normal    SuccessfulAttachVolume    pod/nginx-0                                            AttachVolume.Attach succeeded for volume "pvc-4ccf6b30-a445-415a-98f2-35cef3c030ae"
+3m14s       Warning   FailedMount               pod/nginx-0                                            Unable to attach or mount volumes: unmounted volumes=[default], unattached volumes=[default kube-api-access-ptvn5]: timed out waiting for the condition
+94s         Normal    Pulling                   pod/nginx-0                                            Pulling image "nginx"
+89s         Normal    Pulled                    pod/nginx-0                                            Successfully pulled image "nginx" in 5.531561241s
+86s         Normal    Started                   pod/nginx-0                                            Started container nginx
+86s         Normal    Created                   pod/nginx-0                                            Created container nginx
+```
+
 # Delete the cluster.
 ```
-../az-cluster.sh delete cluster DiskTest
+../azure-cluster.sh delete dluster DiskTest
 ```
