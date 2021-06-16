@@ -36,6 +36,7 @@ See results/{storage-class}-{storage-capacity}-output.txt.
 
 ```bash
 # 1. Create a pod.
+kubectl apply -f disk/storage-class.yaml
 kubectl apply -f azure-basic.yaml
 
 # 2. Install wget.
@@ -66,6 +67,41 @@ kubectl delete -f azure-basic.yaml
 ```
 
 ## Test results
+
+### Storage Class "disk-no-cache"
+
+```bash
+root@nginx:/mnt/disk-no-cache# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
+2048000000 bytes (2.0 GB, 1.9 GiB) copied, 19.3077 s, 106 MB/s
+
+root@nginx:/mnt/disk-no-cache# dd if=file1 of=file2 bs=8k count=250000 && sync 
+048000000 bytes (2.0 GB, 1.9 GiB) copied, 45.9554 s, 44.6 MB/s
+
+root@nginx:/mnt/disk-no-cache# time ( ls -l && rm -f file1 file2 )
+real    0m0.227s
+user    0m0.002s
+sys     0m0.075s
+
+root@nginx:/mnt/disk-no-cache# time ( wget -qO- https://wordpress.org/latest.tar.gz | tar xvz -C . 2>&1 > /dev/null )
+real    0m3.249s
+user    0m0.447s
+sys     0m0.205s
+
+real    0m3.292s
+user    0m0.457s
+sys     0m0.245s
+
+root@nginx:/mnt/disk-no-cache# time ( du wordpress/ | tail -1 && rm -rf wordpress )
+57792   wordpress/
+
+real    0m0.156s
+user    0m0.016s
+sys     0m0.046s
+
+real    0m0.196s
+user    0m0.012s
+sys     0m0.053s
+```
 
 ### Storage Class "default"
 
@@ -315,6 +351,42 @@ sys     0m0.470s
 real    0m24.213s
 user    0m0.025s
 sys     0m0.428s
+```
+
+# Run manual fio tests
+Set up:
+
+```bash
+kubectl apply -f disk/storage-class.yaml
+kubectl apply -f azure-basic-fio.yaml
+kubectl -it exec pod/fio -- sh
+```
+
+Sample test:
+
+```bash
+cd /mnt/default
+
+fio --randrepeat=0 --verify=0 --ioengine=libaio --direct=1 --gtod_reduce=1 --name=read_iops --filename=./fiotest --bs=4K --iodepth=64 --size=2G --readwrite=randread --time_based --ramp_time=2s --runtime=15s
+
+read_iops: (g=0): rw=randread, bs=4096B-4096B,4096B-4096B,4096B-4096B, ioengine=libaio, iodepth=64
+fio-2.17-45-g06cb
+Starting 1 process
+Jobs: 1 (f=1): [r(1)][100.0%][r=2376KiB/s,w=0KiB/s][r=594,w=0 IOPS][eta 00m:00s]
+read_iops: (groupid=0, jobs=1): err= 0: pid=29: Wed Jun 16 16:53:07 2021
+   read: IOPS=594, BW=2396KiB/s (2454kB/s)(35.5MiB/15149msec)
+  cpu          : usr=0.41%, sys=0.96%, ctx=4528, majf=0, minf=1
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.2%, 32=0.4%, >=64=113.6%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.1%, >=64=0.0%
+     issued rwt: total=9013,0,0, short=0,0,0, dropped=0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=64
+
+Run status group 0 (all jobs):
+   READ: bw=2396KiB/s (2454kB/s), 2396KiB/s-2396KiB/s (2454kB/s-2454kB/s), io=35.5MiB (37.2MB), run=15149-15149msec
+
+Disk stats (read/write):
+  sde: ios=10200/0, merge=0/0, ticks=1082600/0, in_queue=1065260, util=99.31%
 ```
 
 # Delete the cluster

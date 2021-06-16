@@ -1,0 +1,11 @@
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: disk-no-cache
+parameters:
+  skuname: StandardSSD_LRS
+  cachingMode: None
+provisioner: disk.csi.azure.com
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer

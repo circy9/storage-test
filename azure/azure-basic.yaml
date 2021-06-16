@@ -1,6 +1,18 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
+  name: disk-no-cache-pvc
+spec:
+  storageClassName: disk-no-cache
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
   name: default-pvc
 spec:
   storageClassName: default
@@ -62,6 +74,8 @@ spec:
         cpu: 250m
         memory: 256Mi
     volumeMounts:
+    - mountPath: "/mnt/disk-no-cache"
+      name: disk-no-cache-volume
     - mountPath: "/mnt/default"
       name: default-volume
     - mountPath: "/mnt/managed-premium"
@@ -71,6 +85,9 @@ spec:
     - mountPath: "/mnt/azurefile-premium"
       name: azurefile-premium-volume
   volumes:
+    - name: disk-no-cache-volume
+      persistentVolumeClaim:
+        claimName: disk-no-cache-pvc
     - name: default-volume
       persistentVolumeClaim:
         claimName: default-pvc
