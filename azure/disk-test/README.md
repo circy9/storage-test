@@ -263,6 +263,67 @@ Mon Jun  7 16:04:55 PDT 2021
 86s         Normal    Created                   pod/nginx-0                                            Created container nginx
 ```
 
+# Test: What happens if you delete the corresponding disk of an existing PV?
+
+## If you mount it with a pod, you will see "not found" errors.
+
+Note that you can delete a disk only if it is not attached to any VM (i.e., not mounted to an existing pod). The PV won't be automatically deleted even after you delete its disk.
+
+```bash
+kubectl apply -f ../azure-basic.yaml
+```
+
+Detach a disk from the vm, and then delete the disk (not shown):
+![screenshot](https://github.com/circy9/storage-test/disk-test/detach-disk-from-vm.jpg?raw=true)
+
+Restart the pod:
+```bash
+kubectl delete po/nginx
+kubectl apply -f ../azure-basic.yaml
+```
+
+Error message:
+```
+$ kubectl describe po
+
+Events:
+  Type     Reason                  Age                   From                     Message
+  ----     ------                  ----                  ----                     -------
+  Normal   Scheduled               5m31s                 default-scheduler        Successfully assigned default/nginx to aks-nodepool1-77625304-vmss000000
+  Normal   SuccessfulAttachVolume  5m15s                 attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-340337d4-2b55-489f-a223-5f5cf779709a"
+  Normal   SuccessfulAttachVolume  5m13s                 attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-24c95c92-96bc-42ea-84b5-6d1dc1cfad28"
+  Warning  FailedMount             3m28s                 kubelet                  Unable to attach or mount volumes: unmounted volumes=[disk-no-cache-volume], unattached volumes=[disk-no-cache-volume default-volume managed-premium-volume azurefile-volume azurefile-premium-volume kube-api-access-jsxph]: timed out waiting for the condition
+  Warning  FailedMount             71s                   kubelet                  Unable to attach or mount volumes: unmounted volumes=[disk-no-cache-volume], unattached volumes=[kube-api-access-jsxph disk-no-cache-volume default-volume managed-premium-volume azurefile-volume azurefile-premium-volume]: timed out waiting for the condition
+  Warning  FailedAttachVolume      36s (x11 over 4m51s)  attachdetach-controller  AttachVolume.Attach failed for volume "pvc-831f1f91-cd3d-4088-8f23-7faa132f6eb2" : rpc error: code = NotFound desc = Volume not found, failed with error: Retriable: false, RetryAfter: 0s, HTTPStatusCode: 404, RawError: Retriable: false, RetryAfter: 0s, HTTPStatusCode: 404, RawError: {"error":{"code":"ResourceNotFound","message":"The Resource 'Microsoft.Compute/disks/pvc-831f1f91-cd3d-4088-8f23-7faa132f6eb2' under resource group 'mc_liqiantest_cluster_westus' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix"}}
+```
+
+## The corresponding PV will stuck at status:released after deletion
+
+```
+$ kubectl describe pv
+Events:
+  Type     Reason              Age                    From                                                                                               Message
+  ----     ------              ----                   ----                                                                                               -------
+  Warning  VolumeFailedDelete  2m39s (x199 over 12h)  disk.csi.azure.com_csi-azuredisk-controller-69d6c5b6f4-gh99c_13c6fffd-6932-40f8-9f12-83e3d3df96c8  rpc error: code = Unknown desc = Retriable: false, RetryAfter: 0s, HTTPStatusCode: 404, RawError: Retriable: false, RetryAfter: 0s, HTTPStatusCode: 404, RawError: {"error":{"code":"ResourceNotFound","message":"The Resource 'Microsoft.Compute/disks/pvc-831f1f91-cd3d-4088-8f23-7faa132f6eb2' under resource group 'mc_liqiantest_cluster_westus' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix"}}
+```
+
+# Test: What happens if you add a disk to a vmss manually and then use dynamic PV provisioning? You will see "disk already attached at LUN 0" error.
+
+Attach a disk to vmss:
+![screenshot](https://github.com/circy9/storage-test/disk-test/attach-disk-to-vmss.jpg?raw=true)
+
+```
+$ kubectl apply -f ../azure-basic.yaml
+$ kubectl describe po
+  Warning  FailedAttachVolume  0s    attachdetach-controller  AttachVolume.Attach failed for volume "pvc-557b1c92-cf62-4bc5-985a-d0af4579059c" : Retriable: false, RetryAfter: 0s, HTTPStatusCode: 400, RawError: Retriable: false, RetryAfter: 0s, HTTPStatusCode: 400, RawError: {
+  "error": {
+    "code": "InvalidParameter",
+    "message": "LUN Collision: Disk  is already attached at LUN 0 to VM Instance aks-nodepool1-77625304-vmss_0",
+    "target": "dataDisk.lun"
+  }
+}
+```
+
 # Delete the cluster.
 ```
 ../azure-cluster.sh delete dluster DiskTest
