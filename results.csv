@@ -130,6 +130,11 @@ azure/results/default-500Gi-output.txt,default,500,0.49093,6.68363,8181,596.,194
 azure/results/default-500Gi-output.txt,default,500,0.48991,6.67,8170,594.,195,75,195,143,1821,595
 
 
+azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,8.71,7.03727,578,551.,72,69,93,93,442,154
+azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,6.69,6.68,596,596.,75,75,93,93,445,151
+azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,8.98,7.23,579,550.,72,69,93,93,450,145
+
+
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.50583,1.32495,8101,3423.,176,149,194,163,6144,2022
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.48924,1.42383,8073,3404.,174,144,195,163,6119,2052
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.48959,1.32984,8158,3503.,195,162,194,163,6124,2031
