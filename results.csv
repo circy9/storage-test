@@ -21,6 +21,7 @@ azure/results/azure-rook-ceph-dbench-default-output.txt,rook-cephfs,25,0.78607,1
 azure/results/azurefile-100Gi-output.txt,azurefile,100,5.36,4.96,549,1022.,60,129,118,123,643,209
 azure/results/azurefile-100Gi-output.txt,azurefile,100,5.56,4.92,576,1028.,62,128,125,122,615,204
 azure/results/azurefile-100Gi-output.txt,azurefile,100,9.59,4.95,701,1023.,64,128,126,158,502,169
+azure/results/azurefile-100Gi-output.txt,azurefile,100,7.04,5.06,579,1023.,72,128,145,150,599,206
 
 
 azure/results/azurefile-10Gi-output.txt,azurefile,10,9.50,5.06,364,1025.,66,128,132,151,627,211
@@ -41,6 +42,10 @@ azure/results/azurefile-500Gi-output.txt,azurefile,500,18.17,4.85,500,1027.,63,1
 azure/results/azurefile-csi-nfs-100Gi-output.txt,azurefile-csi-nfs,100,39.40,13.25,4131,1077.,349,162,507,139,340,112
 azure/results/azurefile-csi-nfs-100Gi-output.txt,azurefile-csi-nfs,100,43.91,14.18,4120,1044.,354,162,487,149,380,126
 azure/results/azurefile-csi-nfs-100Gi-output.txt,azurefile-csi-nfs,100,32.28,12.93,4120,934.,311,162,348,139,488,163
+azure/results/azurefile-csi-nfs-100Gi-output.txt,azurefile-csi-nfs,100,29.65,13.53,4178,1461.,298,162,343,153,513,180
+
+
+azure/results/azurefile-csi-nfs-10Ti-output.txt,azurefile-csi-nfs,10240,2.74841,2.66,9634,6306.,256,162,373,163,8251,2772
 
 
 azure/results/azurefile-csi-nfs-1Ti-output.txt,azurefile-csi-nfs,1024,2.66797,2.53638,3967,2633.,329,162,543,163,1768,579
@@ -56,9 +61,13 @@ azure/results/azurefile-csi-nfs-500Gi-output.txt,azurefile-csi-nfs,500,3.70,2.64
 azure/results/azurefile-premium-100Gi-output.txt,azurefile-premium,100,3.6352,12.84,4041,1077.,154,162,163,131,1102,357
 azure/results/azurefile-premium-100Gi-output.txt,azurefile-premium,100,3.34649,9.85,4042,1156.,150,155,163,153,1910,633
 azure/results/azurefile-premium-100Gi-output.txt,azurefile-premium,100,3.14311,10.42,4044,1010.,155,156,152,155,1747,582
+azure/results/azurefile-premium-100Gi-output.txt,azurefile-premium,100,3.31365,4.29,3801,1385.,151,141,152,157,885,300
 
 
 azure/results/azurefile-premium-10Gi-output.txt,azurefile-premium,10,
+
+azure/results/azurefile-premium-10Ti-output.txt,azurefile-premium,10240,3.55054,2.10289,13.3k,6959.,154,141,143,166,10.9k,3629
+
 
 azure/results/azurefile-premium-1Ti-output.txt,azurefile-premium,1024,3.62498,1.97202,4045,4205.,155,154,164,161,2902,962
 azure/results/azurefile-premium-1Ti-output.txt,azurefile-premium,1024,4.29,2.47,3964,4172.,152,154,162,158,2872,949
@@ -134,6 +143,8 @@ azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,8.71,7.03727,578,
 azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,6.69,6.68,596,596.,75,75,93,93,445,151
 azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,8.98,7.23,579,550.,72,69,93,93,450,145
 
+
+azure/results/example-nfs-1Ti-output.txt,example-nfs,1024,azure/results/example-nfs-1Ti-output.txt,example-nfs,1024,
 
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.50583,1.32495,8101,3423.,176,149,194,163,6144,2022
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.48924,1.42383,8073,3404.,174,144,195,163,6119,2052
