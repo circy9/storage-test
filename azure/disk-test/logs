@@ -1,0 +1,108 @@
+2021-06-18T22:49:06.207921901Z stderr F I0618 22:49:06.207371       1 utils.go:95] GRPC call: /csi.v1.Node/NodeStageVolume
+2021-06-18T22:49:06.2082119Z stderr F I0618 22:49:06.207395       1 utils.go:96] GRPC request: {"publish_context":{"LUN":"1"},"staging_target_pat
+h":"/var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount","volume_capability":{"AccessType":{"Mount
+":{}},"access_mode":{"mode":1}},"volume_context":{"skuname":"StandardSSD_LRS","storage.kubernetes.io/csiProvisionerIdentity":"1624035836006-8081-
+disk.csi.azure.com"},"volume_id":"/subscriptions/8ecadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Micros
+oft.Compute/disks/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e"}
+2021-06-18T22:49:06.217730581Z stderr F I0618 22:49:06.216583       1 nodeserver.go:131] NodeStageVolume: formatting /dev/disk/azure/scsi1/lun1 a
+nd mounting at /var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount with mount options([])
+2021-06-18T22:49:06.226084065Z stderr F I0618 22:49:06.225878       1 mount_linux.go:408] Disk "/dev/disk/azure/scsi1/lun1" appears to be unforma
+tted, attempting to format as type: "ext4" with options: [-F -m0 /dev/disk/azure/scsi1/lun1]
+2021-06-18T22:49:07.107938034Z stderr F I0618 22:49:07.107354       1 mount_linux.go:418] Disk successfully formatted (mkfs): ext4 - /dev/disk/az
+ure/scsi1/lun1 /var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount
+2021-06-18T22:49:07.122359506Z stderr F I0618 22:49:07.120431       1 nodeserver.go:137] NodeStageVolume: format /dev/disk/azure/scsi1/lun1 and m
+ounting at /var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount successfully.
+2021-06-18T22:49:07.122391506Z stderr F I0618 22:49:07.120472       1 utils.go:102] GRPC response: {}
+2021-06-18T22:49:07.136522978Z stderr F I0618 22:49:07.135356       1 utils.go:95] GRPC call: /csi.v1.Node/NodePublishVolume
+2021-06-18T22:49:07.136546778Z stderr F I0618 22:49:07.135381       1 utils.go:96] GRPC request: {"publish_context":{"LUN":"1"},"staging_target_p
+ath":"/var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount","target_path":"/var/lib/kubelet/pods/60
+f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount","volume_capability":{"AccessType":{"
+Mount":{}},"access_mode":{"mode":1}},"volume_context":{"skuname":"StandardSSD_LRS","storage.kubernetes.io/csiProvisionerIdentity":"1624035836006-
+8081-disk.csi.azure.com"},"volume_id":"/subscriptions/8ecadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/M
+icrosoft.Compute/disks/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e"}
+2021-06-18T22:49:07.136554878Z stderr F I0618 22:49:07.135581       1 nodeserver.go:246] NodePublishVolume: mounting /var/lib/kubelet/plugins/kub
+ernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount at /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kube
+rnetes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount
+2021-06-18T22:49:07.157674037Z stderr F I0618 22:49:07.157429       1 nodeserver.go:251] NodePublishVolume: mount /var/lib/kubelet/plugins/kubern
+etes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount at /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kuberne
+tes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount successfully
+2021-06-18T22:49:07.157712037Z stderr F I0618 22:49:07.157461       1 utils.go:102] GRPC response: {}
+2021-06-18T22:49:54.220507229Z stderr F I0618 22:49:54.220103       1 utils.go:95] GRPC call: /csi.v1.Node/NodeStageVolume
+2021-06-18T22:49:54.220598829Z stderr F I0618 22:49:54.220132       1 utils.go:96] GRPC request: {"publish_context":{"LUN":"2"},"staging_target_p
+ath":"/var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount","volume_capability":{"AccessType":{"Mou
+nt":{}},"access_mode":{"mode":1}},"volume_context":{"cachingMode":"None","skuname":"StandardSSD_LRS","storage.kubernetes.io/csiProvisionerIdentit
+y":"1624035836006-8081-disk.csi.azure.com"},"volume_id":"/subscriptions/8ecadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_
+westus/providers/Microsoft.Compute/disks/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89"}
+2021-06-18T22:49:54.241108334Z stderr F I0618 22:49:54.239900       1 nodeserver.go:131] NodeStageVolume: formatting /dev/disk/azure/scsi1/lun2 a
+nd mounting at /var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount with mount options([])
+2021-06-18T22:49:54.314462253Z stderr F I0618 22:49:54.314218       1 mount_linux.go:408] Disk "/dev/disk/azure/scsi1/lun2" appears to be unforma
+tted, attempting to format as type: "ext4" with options: [-F -m0 /dev/disk/azure/scsi1/lun2]
+2021-06-18T22:49:54.969038325Z stderr F I0618 22:49:54.968764       1 mount_linux.go:418] Disk successfully formatted (mkfs): ext4 - /dev/disk/az
+ure/scsi1/lun2 /var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount
+2021-06-18T22:49:54.98837983Z stderr F I0618 22:49:54.987809       1 nodeserver.go:137] NodeStageVolume: format /dev/disk/azure/scsi1/lun2 and mo
+unting at /var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount successfully.
+2021-06-18T22:49:54.98841143Z stderr F I0618 22:49:54.987832       1 utils.go:102] GRPC response: {}
+2021-06-18T22:49:55.003545234Z stderr F I0618 22:49:55.001318       1 utils.go:95] GRPC call: /csi.v1.Node/NodePublishVolume
+2021-06-18T22:49:55.003564234Z stderr F I0618 22:49:55.001338       1 utils.go:96] GRPC request: {"publish_context":{"LUN":"2"},"staging_target_p
+ath":"/var/lib/kubelet/plugins/kubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount","target_path":"/var/lib/kubelet/pods/60
+f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount","volume_capability":{"AccessType":{"
+Mount":{}},"access_mode":{"mode":1}},"volume_context":{"cachingMode":"None","skuname":"StandardSSD_LRS","storage.kubernetes.io/csiProvisionerIden
+tity":"1624035836006-8081-disk.csi.azure.com"},"volume_id":"/subscriptions/8ecadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_diskte
+st_westus/providers/Microsoft.Compute/disks/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89"}
+2021-06-18T22:49:55.003571834Z stderr F I0618 22:49:55.001528       1 nodeserver.go:246] NodePublishVolume: mounting /var/lib/kubelet/plugins/kub
+ernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount at /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kube
+rnetes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount
+2021-06-18T22:49:55.005185135Z stderr F I0618 22:49:55.004984       1 nodeserver.go:251] NodePublishVolume: mount /var/lib/kubelet/plugins/kubern
+etes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount at /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kuberne
+tes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount successfully
+2021-06-18T22:49:55.005199435Z stderr F I0618 22:49:55.005016       1 utils.go:102] GRPC response: {}
+2021-06-18T23:00:01.832862729Z stderr F I0618 23:00:01.821197       1 utils.go:95] GRPC call: /csi.v1.Node/NodeUnpublishVolume
+2021-06-18T23:00:01.832900529Z stderr F I0618 23:00:01.821232       1 utils.go:96] GRPC request: {"target_path":"/var/lib/kubelet/pods/60f948b4-d
+225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount","volume_id":"/subscriptions/8ecadfc9-d1a3-4e
+a4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89"}
+2021-06-18T23:00:01.832916529Z stderr F I0618 23:00:01.821286       1 nodeserver.go:268] NodeUnpublishVolume: unmounting volume /subscriptions/8e
+cadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-e8eb11a6-e0b8-4e32-9841-6a750
+9811b89 on /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount
+2021-06-18T23:00:01.832921229Z stderr F I0618 23:00:01.822944       1 utils.go:95] GRPC call: /csi.v1.Node/NodeUnpublishVolume
+2021-06-18T23:00:01.832926029Z stderr F I0618 23:00:01.822955       1 utils.go:96] GRPC request: {"target_path":"/var/lib/kubelet/pods/60f948b4-d
+225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount","volume_id":"/subscriptions/8ecadfc9-d1a3-4e
+a4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e"}
+2021-06-18T23:00:01.832930329Z stderr F I0618 23:00:01.822993       1 nodeserver.go:268] NodeUnpublishVolume: unmounting volume /subscriptions/8e
+cadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-a592284e-a6a6-472b-abc8-fe07d
+73fa00e on /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount
+2021-06-18T23:00:01.832935329Z stderr F W0618 23:00:01.828032       1 mount_helper_common.go:129] Warning: "/var/lib/kubelet/pods/60f948b4-d225-4
+b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount" is not a mountpoint, deleting
+2021-06-18T23:00:01.832949529Z stderr F I0618 23:00:01.828103       1 nodeserver.go:279] NodeUnpublishVolume: unmount volume /subscriptions/8ecad
+fc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-e8eb11a6-e0b8-4e32-9841-6a750981
+1b89 on /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/mount succe
+ssfully
+2021-06-18T23:00:01.832955829Z stderr F I0618 23:00:01.828115       1 utils.go:102] GRPC response: {}
+2021-06-18T23:00:01.832960929Z stderr F W0618 23:00:01.828405       1 mount_helper_common.go:129] Warning: "/var/lib/kubelet/pods/60f948b4-d225-4
+b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount" is not a mountpoint, deleting
+2021-06-18T23:00:01.832965129Z stderr F I0618 23:00:01.828473       1 nodeserver.go:279] NodeUnpublishVolume: unmount volume /subscriptions/8ecad
+fc9-d1a3-4ea4-b844-0d9f87e4d7c8/resourceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-a592284e-a6a6-472b-abc8-fe07d73f
+a00e on /var/lib/kubelet/pods/60f948b4-d225-4b82-8b1c-bce850f41ce2/volumes/kubernetes.io~csi/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/mount succe
+ssfully
+2021-06-18T23:00:01.832969329Z stderr F I0618 23:00:01.828484       1 utils.go:102] GRPC response: {}
+2021-06-18T23:00:01.932419047Z stderr F I0618 23:00:01.932077       1 utils.go:95] GRPC call: /csi.v1.Node/NodeUnstageVolume
+2021-06-18T23:00:01.932622947Z stderr F I0618 23:00:01.932101       1 utils.go:96] GRPC request: {"staging_target_path":"/var/lib/kubelet/plugins
+/kubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount","volume_id":"/subscriptions/8ecadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/reso
+urceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e"}
+2021-06-18T23:00:01.932630847Z stderr F I0618 23:00:01.932150       1 nodeserver.go:174] NodeUnstageVolume: unmounting /var/lib/kubelet/plugins/k
+ubernetes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount
+2021-06-18T23:00:01.938324948Z stderr F I0618 23:00:01.935659       1 utils.go:95] GRPC call: /csi.v1.Node/NodeUnstageVolume
+2021-06-18T23:00:01.938344848Z stderr F I0618 23:00:01.935668       1 utils.go:96] GRPC request: {"staging_target_path":"/var/lib/kubelet/plugins
+/kubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount","volume_id":"/subscriptions/8ecadfc9-d1a3-4ea4-b844-0d9f87e4d7c8/reso
+urceGroups/mc_disktest_disktest_westus/providers/Microsoft.Compute/disks/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89"}
+2021-06-18T23:00:01.938353348Z stderr F I0618 23:00:01.935701       1 nodeserver.go:174] NodeUnstageVolume: unmounting /var/lib/kubelet/plugins/k
+ubernetes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount
+2021-06-18T23:00:01.94566555Z stderr F W0618 23:00:01.945051       1 mount_helper_common.go:129] Warning: "/var/lib/kubelet/plugins/kubernetes.io
+/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount" is not a mountpoint, deleting
+2021-06-18T23:00:01.94568455Z stderr F I0618 23:00:01.945128       1 nodeserver.go:179] NodeUnstageVolume: unmount /var/lib/kubelet/plugins/kuber
+netes.io/csi/pv/pvc-a592284e-a6a6-472b-abc8-fe07d73fa00e/globalmount successfully
+2021-06-18T23:00:01.94569025Z stderr F I0618 23:00:01.945145       1 utils.go:102] GRPC response: {}
+2021-06-18T23:00:01.94569535Z stderr F W0618 23:00:01.945445       1 mount_helper_common.go:129] Warning: "/var/lib/kubelet/plugins/kubernetes.io
+/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount" is not a mountpoint, deleting
+2021-06-18T23:00:01.94569975Z stderr F I0618 23:00:01.945502       1 nodeserver.go:179] NodeUnstageVolume: unmount /var/lib/kubelet/plugins/kuber
+netes.io/csi/pv/pvc-e8eb11a6-e0b8-4e32-9841-6a7509811b89/globalmount successfully
+2021-06-18T23:00:01.94570415Z stderr F I0618 23:00:01.945517       1 utils.go:102] GRPC response: {}

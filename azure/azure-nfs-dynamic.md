@@ -15,6 +15,9 @@ Follow nfs-dynamic/README.md to create nfs storage class.
 ./run-dbench-test.sh -t azure-nfs-dynamic-dbench-default
 ./run-dbench-test.sh -t azure-nfs-dynamic-dbench-default
 ./run-dbench-test.sh -t azure-nfs-dynamic-dbench-default
+./run-dbench-test.sh -scl 'example-nfs' -sca '1Ti'
+./run-dbench-test.sh -scl 'example-nfs' -sca '1Ti'
+./run-dbench-test.sh -scl 'example-nfs' -sca '1Ti'
 
 ```
 

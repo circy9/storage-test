@@ -144,7 +144,10 @@ azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,6.69,6.68,596,596
 azure/results/disk-no-cache-100Gi-output.txt,disk-no-cache,100,8.98,7.23,579,550.,72,69,93,93,450,145
 
 
-azure/results/example-nfs-1Ti-output.txt,example-nfs,1024,azure/results/example-nfs-1Ti-output.txt,example-nfs,1024,
+azure/results/example-nfs-100Gi-output.txt,example-nfs,100,0.29502,6.29,14.6k,829.,705,114,1018,193,2702,901
+azure/results/example-nfs-100Gi-output.txt,example-nfs,100,0.27936,6.86,13.4k,930.,721,116,1035,193,2661,874
+azure/results/example-nfs-100Gi-output.txt,example-nfs,100,0.29383,6.30,15.2k,938.,685,116,1039,2744,764,258
+
 
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.50583,1.32495,8101,3423.,176,149,194,163,6144,2022
 azure/results/managed-premium-100Gi-output.txt,managed-premium,100,0.48924,1.42383,8073,3404.,174,144,195,163,6119,2052
