@@ -67,7 +67,7 @@ kubectl delete -f gcp-filestore-basic.yaml
 
 ## Test results
 
-### hdd
+### hdd (1Ti)
 
 ```bash
 root@nginx:/mnt/filestore-hdd# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 

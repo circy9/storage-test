@@ -60,7 +60,7 @@ kubectl delete -f gcp-basic.yaml
 
 ## Test results
 
-### Storage Class "standard"
+### Storage Class "standard" 10Gi
 
 ```bash
 root@nginx:/mnt/standard# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -105,7 +105,7 @@ user    0m0.007s
 sys     0m0.078s
 ```
 
-### Storage Class "standard-rwo"
+### Storage Class "standard-rwo" 10Gi
 
 ```bash
 root@nginx:/mnt/standard-rwo# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -149,7 +149,7 @@ user    0m0.006s
 sys     0m0.070s
 ```
 
-### Storage Class "premium-rwo"
+### Storage Class "premium-rwo" 10Gi
 
 ```bash
 root@nginx:/mnt/premium-rwo# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
