@@ -23,6 +23,7 @@ for i in "${STORAGE_CLASS[@]}"; do
 done
 
 ./run-dbench-test.sh -scl 'disk-no-cache' -sca '100Gi'
+./run-dbench-test.sh -scl 'disk-premium-no-cache' -sca '100Gi'
 ./run-dbench-test.sh -scl 'azurefile' -sca '1Ti'
 ./run-dbench-test.sh -scl 'azurefile-premium' -sca '100Gi'
 ./run-dbench-test.sh -scl 'azurefile-premium' -sca '500Gi'

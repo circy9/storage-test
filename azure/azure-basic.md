@@ -2,6 +2,7 @@
 
 ```bash
 ./azure-cluster.sh create cluster AKSTest
+kubectl apply -f disk/storage-class.yaml
 ```
 
 # Run dbench tests: single
@@ -36,7 +37,6 @@ See results/{storage-class}-{storage-capacity}-output.txt.
 
 ```bash
 # 1. Create a pod.
-kubectl apply -f disk/storage-class.yaml
 kubectl apply -f azure-basic.yaml
 
 # 2. Install wget.
@@ -68,7 +68,7 @@ kubectl delete -f azure-basic.yaml
 
 ## Test results
 
-### Storage Class "disk-no-cache"
+### Storage Class "disk-no-cache" 10Gi
 
 ```bash
 root@nginx:/mnt/disk-no-cache# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -103,7 +103,25 @@ user    0m0.012s
 sys     0m0.053s
 ```
 
-### Storage Class "default"
+### Storage Class "disk-premium-no-cache" 10Gi
+
+```
+root@nginx:/mnt/disk-premium-no-cache# time ( wget -qO- https://wordpress.org/latest.tar.gz | tar xvz -C . 2>&1 > /dev/null )
+
+real	0m3.213s
+user	0m0.489s
+sys	0m0.230s
+
+real	0m3.156s
+user	0m0.477s
+sys	0m0.239s
+
+real	0m3.293s
+user	0m0.479s
+sys	0m0.257s
+```
+
+### Storage Class "default" 10Gi
 
 ```bash
 root@nginx:/mnt/default# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -164,7 +182,7 @@ user    0m0.004s
 sys     0m0.063s
 ```
 
-### Storage Class "managed-premium"
+### Storage Class "managed-premium" 10Gi
 
 ```bash
 root@nginx:/mnt/managed-premium# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -225,7 +243,7 @@ user    0m0.008s
 sys     0m0.052s
 ```
 
-### Storage Class "azurefile"
+### Storage Class "azurefile" 10Gi
 
 ```bash
 root@nginx:/mnt/azurefile# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -293,7 +311,32 @@ user    0m0.050s
 sys     0m0.464s
 ```
 
-### Storage Class "azurefile-premium"
+### Storage Class "azurefile" 1Ti
+
+```
+root@nginx:/mnt/azurefile# time ( wget -qO- https://wordpress.org/latest.tar.gz | tar xvz -C . 2>&1 > /dev/null )
+
+real	2m27.554s
+user	0m0.637s
+sys	0m1.770s
+
+real	2m33.468s
+user	0m0.584s
+sys	0m1.842s
+
+root@nginx:/mnt/azurefile# time ( du wordpress/ | tail -1 && rm -rf wordpress )
+52034	wordpress/
+
+real	0m38.951s
+user	0m0.038s
+sys	0m0.435s
+
+real	0m39.179s
+user	0m0.046s
+sys	0m0.419s
+```
+
+### Storage Class "azurefile-premium" 100Gi
 
 ```bash
 root@nginx:/mnt/azurefile-premium# dd if=/dev/zero of=file1 bs=8k count=250000 && sync 
@@ -351,6 +394,30 @@ sys     0m0.470s
 real    0m24.213s
 user    0m0.025s
 sys     0m0.428s
+```
+
+### Storage Class "azurefile-premium" 1Ti
+```
+root@nginx:/mnt/azurefile-premium# time ( wget -qO- https://wordpress.org/latest.tar.gz | tar xvz -C . 2>&1 > /dev/null )
+
+real	1m0.989s
+user	0m0.574s
+sys	0m2.175s
+
+real	1m0.592s
+user	0m0.617s
+sys	0m2.026s
+
+root@nginx:/mnt/azurefile-premium# time ( du wordpress/ | tail -1 && rm -rf wordpress )
+52034	wordpress/
+
+real	0m24.597s
+user	0m0.045s
+sys	0m0.393s
+
+real	0m24.681s
+user	0m0.049s
+sys	0m0.393s
 ```
 
 # Run manual fio tests

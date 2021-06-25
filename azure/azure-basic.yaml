@@ -13,6 +13,18 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
+  name: disk-premium-no-cache-pvc
+spec:
+  storageClassName: disk-premium-no-cache
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
   name: default-pvc
 spec:
   storageClassName: default
@@ -44,7 +56,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
+      storage: 1Ti
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -56,7 +68,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi
+      storage: 1Ti
 ---
 kind: Pod
 apiVersion: v1
@@ -76,6 +88,8 @@ spec:
     volumeMounts:
     - mountPath: "/mnt/disk-no-cache"
       name: disk-no-cache-volume
+    - mountPath: "/mnt/disk-premium-no-cache"
+      name: disk-premium-no-cache-volume
     - mountPath: "/mnt/default"
       name: default-volume
     - mountPath: "/mnt/managed-premium"
@@ -88,6 +102,9 @@ spec:
     - name: disk-no-cache-volume
       persistentVolumeClaim:
         claimName: disk-no-cache-pvc
+    - name: disk-premium-no-cache-volume
+      persistentVolumeClaim:
+        claimName: disk-premium-no-cache-pvc
     - name: default-volume
       persistentVolumeClaim:
         claimName: default-pvc

@@ -9,3 +9,15 @@ parameters:
 provisioner: disk.csi.azure.com
 reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
+---
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: disk-premium-no-cache
+parameters:
+  skuname: Premium_LRS
+  cachingMode: None
+provisioner: disk.csi.azure.com
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
