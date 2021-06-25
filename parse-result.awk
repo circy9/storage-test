@@ -22,4 +22,4 @@ BEGIN { FS= "[: ,/=]+" ; print "file name,storage class,capacity (GiB),average r
 /^Sequential Read\/Write:/ { printf "%d,%d,",$4,$6}
 /^Mixed Random Read\/Write IOPS:/ { printf "%s,%s\n",$6,$7}
 
-ENDFILE { print "\n" }
+# ENDFILE { print "\n" }
