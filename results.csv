@@ -1,6 +1,8 @@
 file name,storage class,capacity (GiB),average random read latency (ms),average random write latency (ms),random read IOPS,random write IOPS,random read BW (MiB/s),random write BW (MiB/s),sequential read BW (MiB/s),sequential write BW(MiB/s),mixed random read IOPS,mixed random write IOPS
 azure/results/azure-blob-dbench-default-output.txt,blob,10,0.32671,0.1705,15.6k,24.3k.,3292,251,1345,211,2905,956
 azure/results/azure-blob-nfs-dbench-default-output.txt,blob-nfs,10,52.09,405.98,888,27.,123,7328,228,27,75,25
+azure/results/azure-hpc-cache-dbench-default-output.txt,"",100,0.2562,13.47,24.5k,3798.,1203,160,1311,160,11.2k,3723
+azure/results/azure-hpc-cache-dbench-default-output.txt,"",100,0.25433,14.11,25.6k,4282.,1211,144,1345,160,11.3k,3756
 azure/results/azure-nfs-dynamic-dbench-default-output.txt,example-nfs,10,0.24466,10.05,15.8k,564.,841,70,1092,141,1620,546
 azure/results/azure-nfs-dynamic-dbench-default-output.txt,example-nfs,10,0.23479,10.10,16.1k,561.,813,67,1142,144,1632,546
 azure/results/azure-nfs-dynamic-dbench-default-output.txt,example-nfs,10,0.23371,10.05,15.2k,563.,810,69,1160,142,1653,546
