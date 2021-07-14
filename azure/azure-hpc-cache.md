@@ -99,3 +99,10 @@ tar: wordpress/wp-blog-header.php: Cannot change ownership to uid 65534, gid 655
 root@nginx:/mnt/nfs# mount | grep /mnt
 10.0.0.4:/blob on /mnt/nfs type nfs (rw,relatime,vers=3,rsize=524288,wsize=524288,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=10.0.0.4,mountvers=3,mountport=4046,mountproto=udp,local_lock=none,addr=10.0.0.4)
 ```
+
+## Delete the cluster
+
+```bash
+export rg="liqianhcpcachetest"
+./azure-cluster.sh delete cluster ${rg}
+```
