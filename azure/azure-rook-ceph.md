@@ -24,6 +24,7 @@ NAME                                  READY   STATUS    RESTARTS   AGE
 rook-ceph-operator-6459f5dc4b-cm6j4   1/1     Running   0          4m52s
 
 # Change storageClassName from "gp2" (AWS default) to "default".
+# Note that you can also use other storage classes as listed here: https://docs.microsoft.com/en-us/azure/aks/concepts-storage#storage-classes
 vi cluster-on-pvc.yaml
 kubectl create -f cluster-on-pvc.yaml
 
@@ -40,6 +41,7 @@ ceph status
 ```bash
 # Create filesystem: https://rook.io/docs/rook/v1.6/ceph-filesystem.html.
 kubectl create -f filesystem.yaml
+
 # Wait for running.
 kubectl -n rook-ceph get pod -l app=rook-ceph-mds
 
