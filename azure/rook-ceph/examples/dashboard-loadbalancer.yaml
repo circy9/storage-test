@@ -1,0 +1,22 @@
+# This file is modified from the source file below. Search for "Azure" for all the modifications.
+# Source: https://github.com/rook/rook/blob/v1.7.1/cluster/examples/kubernetes/ceph/dashboard-loadbalancer.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: rook-ceph-mgr-dashboard-loadbalancer
+  namespace: rook-ceph # namespace:cluster
+  labels:
+    app: rook-ceph-mgr
+    rook_cluster: rook-ceph # namespace:cluster
+spec:
+  ports:
+    - name: dashboard
+      port: 80
+      protocol: TCP
+      targetPort: 8443
+  selector:
+    app: rook-ceph-mgr
+    rook_cluster: rook-ceph
+  sessionAffinity: None
+  type: LoadBalancer
