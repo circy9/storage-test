@@ -218,7 +218,7 @@ rook-ceph-mds-myfs-a-66c86f4479-f87rg   Running   aks-storagepool2-14514606-vmss
 rook-ceph-mds-myfs-b-58bbb59b5-lrjjj    Running   aks-storagepool2-14514606-vmss000001
 ```
 
-Create storage class: rook-cephfs:
+Create storage class `rook-cephfs`:
 ```
 kubectl apply -f https://raw.githubusercontent.com/rook/rook/v1.7.1/cluster/examples/kubernetes/ceph/csi/cephfs/storageclass.yaml
 
@@ -239,9 +239,9 @@ References:
 
 Now you can use storage class `rook-cephfs` in your applications to provision persistent volumes. This section contains a simple example of using `rook-cephfs` in a Nginx pod, and testing storage performance using various tools.
 
-### Step 3.1: Use filesystem via a simple Nginx pod
+### Step 3.1: Use filesystem via a simple `nginx` pod
 
-Create a pod running Nginx with a 5GB PV mounted to /mnt/rook-cephfs.
+Create a pod running `nginx` with a 5GB PV mounted to /mnt/rook-cephfs.
 
 ```
 kubectl apply -f examples/nginx.yaml
@@ -443,3 +443,10 @@ Delete the pod:
 ```bash
 kubectl delete -f examples/nginx.yaml
 ```
+
+### Step 4 Additional tooling and monitoring
+
+To make Rook Ceph production ready, following these instructions to set up Rook Toolbox for debugging and testing, and Prometheus for monitoring and alerting.
+
+* [Rook toolbox](https://rook.io/docs/rook/v1.7/ceph-toolbox.html)
+* [Prometheus monitoring](https://rook.io/docs/rook/v1.7/ceph-monitoring.html)
